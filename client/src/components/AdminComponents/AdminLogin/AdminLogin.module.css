@@ -7,7 +7,7 @@
     padding: 20px 60px;
     background-color: #353535;
     border-radius: 2px;
-    box-shadow: rgba(245, 245, 245, 0.3) 0px 1px 2px 0px, rgba(221, 221, 221, 0.15) 0px 2px 6px 2px;
+    /* box-shadow: rgba(245, 245, 245, 0.3) 0px 1px 2px 0px, rgba(221, 221, 221, 0.15) 0px 2px 6px 2px; */
 }
 
 .inputFeild {
@@ -22,8 +22,7 @@
     border: none;
     outline: none;
     background-color: transparent;
-    padding: 4px 8px;
-    font-weight: 600;
+    padding: 2px 8px;
     font-size: large;
 }
 
@@ -39,6 +38,7 @@
 }
 
 .adminForm button {
+    margin-top: 10px;
     font-size: medium;
     background-color: #4c56b3;
     border: none;
@@ -53,4 +53,10 @@
 .adminForm button:hover {
     background-color: #37419c;
     transition: 200ms ease-in-out;
+}
+
+.errorMessage {
+    color: red;
+    font-weight: 600;
+    align-self: flex-start;
 }
