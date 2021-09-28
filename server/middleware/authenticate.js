@@ -1,8 +1,33 @@
-import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
+import adminAuthModel from '../models/adminAuthModel.js'
 
 async function adminAuthMiddleware(req, res, next) {
+    const token = req.cookies.portfolioToken
 
-    next();
+    //if not received token
+    if (!token) {
+        req.logedin = false
+        return next()
+    }
+    try {
+        const tokenVarify = jwt.verify(token, process.env.SECRET_KEY)
+        const admin = await adminAuthModel.findOne({ _id: tokenVarify.id, 'jwtTokens.jwt': token })
+
+        //if token is not valid so admin is null
+        if (!admin) {
+            req.logedin = false
+            return next()
+        }
+
+        //here admin is valid
+        req.logedin = true
+        next()
+
+    } catch (error) {
+        req.logedin = false
+        next()
+    }
+
 
 }
 export default adminAuthMiddleware;

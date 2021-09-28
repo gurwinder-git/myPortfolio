@@ -43,10 +43,9 @@
     background-color: #4c56b3;
     border: none;
     padding: 6px 20px;
-    font-weight: 600;
     cursor: pointer;
     color: whitesmoke;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     transition: 200ms ease-in-out;
 }
 
@@ -55,8 +54,22 @@
     transition: 200ms ease-in-out;
 }
 
+button:disabled {
+    opacity: .6;
+    cursor: auto;
+}
+
+button:disabled:hover {
+    background-color: #4c56b3;
+}
+
 .errorMessage {
     color: red;
     font-weight: 600;
     align-self: flex-start;
+}
+
+.adminForm div[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
 }

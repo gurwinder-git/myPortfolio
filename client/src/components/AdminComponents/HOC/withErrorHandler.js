@@ -1,10 +1,28 @@
 import React, { Component } from "react";
 import Modal from "../../UI/Modal/Modal";
 
-function withErrorHandler(WarappedComponent) {
+function withErrorHandler(WarappedComponent, axios) {
     return class extends Component {
         state = {
             error: null
+        }
+
+        componentWillMount() {
+            axios.interceptors.request.use((req) => {
+                this.setState({ error: null })
+                return req
+            })
+
+            axios.interceptors.response.use((res) => {
+                // if (res === undefined)
+                //     this.setState({ error: 'Something went wrong' })
+                return res
+            }, (error) => {
+                if (error.response)
+                    this.setState({ error: error.response.data.error })
+                else
+                    this.setState({ error: error.message })
+            })
         }
 
         errorConformHandler = () => {

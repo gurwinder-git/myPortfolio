@@ -2,14 +2,15 @@ import express from "express";
 import AdminAuthModel from "../models/adminAuthModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import authenticate from '../middleware/authenticate.js'
 
 const router = express.Router();
 
-router.post('/admin/loginAPI', async (req, res) => {
+router.post('/loginAPI', async (req, res) => {
     const { adminId, password } = req.body
 
     if (!adminId || !password)
-        return res.status(400).send("All fields are required")
+        return res.status(400).json({ error: "All fields are required" })
 
     try {
         const user = await AdminAuthModel.findOne({ adminId })
@@ -34,6 +35,13 @@ router.post('/admin/loginAPI', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: "Internal server error." })
     }
+})
+
+router.get('/verify/authenticationAPI', authenticate, (req, res) => {
+    if (req.logedin)
+        res.status(200).json({ success: "Authorized" })
+    else
+        res.status(200).json({ error: "Not_authorized" })
 })
 
 export default router;
