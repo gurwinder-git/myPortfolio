@@ -16,7 +16,7 @@ export class AdminLogin extends Component {
 
     componentDidMount() {
 
-        axios.get('http://localhost:4000/admin//verify/authenticationAPI', { withCredentials: true })
+        axios.get('http://localhost:4000/admin/verify/authenticationAPI', { withCredentials: true })
             .then((res) => {
                 if (!res.data.error)
                     this.props.history.push('/admin/projects')
@@ -26,6 +26,7 @@ export class AdminLogin extends Component {
             })
             .catch((error) => {
                 console.log("catch", error)
+                this.setState({ loading: false })
             })
     }
 
@@ -47,7 +48,7 @@ export class AdminLogin extends Component {
                     this.setState({ disabled: false })
             })
             .catch(error => {
-                console.log("error", error)
+                console.log("catch [AdminLogin.js]", error)
                 this.setState({ disabled: false })
             })
     }

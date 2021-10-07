@@ -6,7 +6,7 @@ async function adminAuthMiddleware(req, res, next) {
 
     //if not received token
     if (!token) {
-        req.logedin = false
+        req.logedIn = false
         return next()
     }
     try {
@@ -15,16 +15,16 @@ async function adminAuthMiddleware(req, res, next) {
 
         //if token is not valid so admin is null
         if (!admin) {
-            req.logedin = false
+            req.logedIn = false
             return next()
         }
 
         //here admin is valid
-        req.logedin = true
+        req.logedIn = true
         next()
 
     } catch (error) {
-        req.logedin = false
+        req.logedIn = false
         next()
     }
 

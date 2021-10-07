@@ -21,8 +21,6 @@ const adminAuthSchema = new mongoose.Schema({
     ]
 })
 
-
 const AdminAuthModel = mongoose.model('admin', adminAuthSchema)
-
 
 export default AdminAuthModel

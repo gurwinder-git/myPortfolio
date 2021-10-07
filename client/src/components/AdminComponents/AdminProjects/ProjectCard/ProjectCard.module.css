@@ -1,0 +1,73 @@
+.projectCard {
+    height: 406px;
+    width: 371px;
+    background-color: whitesmoke;
+    /* margin: 10px; */
+    transition: all 200ms ease-in-out;
+    border: 1px solid #9c9c9c;
+    padding-bottom: 20px;
+}
+
+.projectCard:hover {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    opacity: .9;
+    transition: all 200ms ease-in-out;
+}
+
+.imageDiv {
+    width: 100%;
+    min-height: 215px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-origin: content-box;
+    /* background-position: center; */
+}
+
+.updateDeleteDiv {
+    height: 15%;
+    width: 100%;
+    background-color: #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+}
+
+.updateDeleteDiv button {
+    margin-left: 10px;
+    padding: 3px;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.deleteBtn {
+    border: 1px solid rgb(255, 48, 48);
+    color: red;
+    background-color: #ff00000a;
+}
+
+.deleteBtn:hover {
+    background-color: #bd111141;
+    transition: all 200ms ease-in-out;
+}
+
+.updateBtn {
+    border: 1px solid rgb(54 48 255);
+    color: #001bc4;
+    background-color: #0002790a;
+}
+
+.updateBtn:hover {
+    background-color: #00027944;
+    transition: all 200ms ease-in-out;
+}
+
+.descriptionDiv {
+    /* border: 1px solid; */
+    height: 32%;
+    overflow-y: auto;
+}
+
+.descriptionDiv p {
+    padding: 12px;
+}

@@ -11,7 +11,6 @@ router.post('/loginAPI', async (req, res) => {
 
     if (!adminId || !password)
         return res.status(400).json({ error: "All fields are required" })
-
     try {
         const user = await AdminAuthModel.findOne({ adminId })
         if (!user)
@@ -37,11 +36,23 @@ router.post('/loginAPI', async (req, res) => {
     }
 })
 
+//utilliy api
 router.get('/verify/authenticationAPI', authenticate, (req, res) => {
-    if (req.logedin)
+    if (req.logedIn)
         res.status(200).json({ success: "Authorized" })
     else
         res.status(200).json({ error: "Not_authorized" })
 })
+
+
+router.get('/get/projectsAPI', authenticate, (req, res) => {
+    if (req.logedIn) {
+        res.status(200).json({ projects: "p1" })
+    }
+    else {
+        res.status(200).json({ error: "Not_authorized" })
+    }
+})
+
 
 export default router;
