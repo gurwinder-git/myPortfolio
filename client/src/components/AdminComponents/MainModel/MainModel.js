@@ -1,20 +1,18 @@
 import React, { Component } from 'react'
-import css from './Modal.module.css'
-import BackDrop from '../BackDrop/BackDrop'
+import css from './MainModel.module.css'
+import BackDrop from '../../UI/BackDrop/BackDrop'
 
-class Modal extends Component {
+export class MainModel extends Component {
 
     render() {
-
-        const modalStyle = {
-            top: this.props.show ? '16vh' : '-17vh',
+        const formStyle = {
+            top: this.props.show ? '16vh' : '-800px',
             opacity: this.props.show ? 1 : 0,
             zIndex: this.props.zIndex
         }
-
         return (
             <>
-                <div className={css.modal} style={modalStyle}>
+                <div className={css.model} style={formStyle}>
                     {this.props.children}
                 </div>
                 <BackDrop show={this.props.show} clicked={this.props.clicked} zIndex={this.props.zIndex} />
@@ -23,4 +21,4 @@ class Modal extends Component {
     }
 }
 
-export default Modal
+export default MainModel

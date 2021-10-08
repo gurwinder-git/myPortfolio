@@ -15,7 +15,7 @@
     padding: 0 0px;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    z-index: 2;
+    z-index: 1;
 }
 
 nav .btn {
@@ -58,4 +58,70 @@ nav .btn:hover {
     cursor: pointer;
     grid-gap: 50px 20px;
     grid-template-columns: auto auto;
+}
+
+.addProjectForm {
+    border: 1px solid #b7b7b7;
+    margin: 15px 0;
+    padding: 20px 52px;
+    background-color: lavender;
+}
+
+.addProjectForm>div {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.addProjectForm>div input {
+    border: 1px solid;
+    padding: 4px;
+    font-size: medium;
+}
+
+.formHeading {
+    text-transform: uppercase;
+}
+
+.addProjectForm button {
+    margin: 0 12px 0 0;
+    /* font-size: inherit; */
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 4px 7px;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.submitBtn {
+    background-color: #43ff6029;
+    border: 1px solid darkgreen;
+    color: green;
+}
+
+.submitBtn:hover {
+    padding: 4px 10px;
+    transition: all 200ms ease-in-out;
+}
+
+.cancelBtn {
+    background-color: #ff00001a;
+    border: 1px solid #8b000099;
+    color: #c30707;
+}
+
+.cancelBtn:hover {
+    padding: 4px 10px;
+    transition: all 200ms ease-in-out;
+}
+
+.addProjectForm>div small {
+    font-size: x-small;
+    color: red;
+    font-weight: 600;
+}
+
+.invalidInput {
+    border: 1px solid #ff000078;
+    background-color: #ff00000f;
 }

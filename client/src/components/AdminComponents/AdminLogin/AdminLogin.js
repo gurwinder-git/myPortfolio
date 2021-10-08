@@ -15,12 +15,10 @@ export class AdminLogin extends Component {
     }
 
     componentDidMount() {
-
         axios.get('http://localhost:4000/admin/verify/authenticationAPI', { withCredentials: true })
             .then((res) => {
                 if (!res.data.error)
                     this.props.history.push('/admin/projects')
-
                 else
                     this.setState({ loading: false })
             })

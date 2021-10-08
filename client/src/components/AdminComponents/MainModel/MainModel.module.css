@@ -1,0 +1,13 @@
+.model {
+    position: absolute;
+    left: 50px;
+    right: 50px;
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    /* min-height: 500px; */
+    cursor: auto;
+    transition: all 250ms ease-in-out;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}

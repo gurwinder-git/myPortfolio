@@ -24,8 +24,10 @@ async function adminAuthMiddleware(req, res, next) {
         next()
 
     } catch (error) {
-        req.logedIn = false
-        next()
+        res.status(500).json({ error: "Internal server error" })
+        console.log(error.message)
+        // req.logedIn = false
+        // next()
     }
 
 

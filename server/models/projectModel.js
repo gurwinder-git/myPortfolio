@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 
 const projectSchema = new mongoose.Schema({
-    pName: {
+    projectTitle: {
         type: String,
         trim: true,
         required: true
@@ -22,3 +22,7 @@ const projectSchema = new mongoose.Schema({
         trim: true
     }
 })
+
+const ProjectModel = mongoose.model('project', projectSchema)
+
+export default ProjectModel;

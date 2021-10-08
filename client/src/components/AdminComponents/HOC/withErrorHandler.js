@@ -32,7 +32,7 @@ function withErrorHandler(WarappedComponent, axios) {
         render() {
             return (
                 <>
-                    <Modal show={this.state.error} clicked={this.errorConformHandler}>
+                    <Modal show={this.state.error} clicked={this.errorConformHandler} zIndex={6}>
                         {this.state.error}
                     </Modal>
                     <WarappedComponent {...this.props} />
