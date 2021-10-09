@@ -1,8 +1,10 @@
 import express from "express";
 import AdminAuthModel from "../models/adminAuthModel.js";
+import ProjectModel from "../models/projectModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import authenticate from '../middleware/authenticate.js'
+import mongooseErrorHandler from 'mongoose'
 
 const router = express.Router();
 
@@ -38,7 +40,7 @@ router.post('/loginAPI', async (req, res) => {
 
 //utilliy api
 router.get('/verify/authenticationAPI', authenticate, (req, res) => {
-    if (req.logedIn)
+    if (req.loggedIn)
         res.status(200).json({ success: "Authorized" })
     else
         res.status(200).json({ error: "Not_authorized" })
@@ -46,8 +48,34 @@ router.get('/verify/authenticationAPI', authenticate, (req, res) => {
 
 
 router.get('/get/projectsAPI', authenticate, (req, res) => {
-    if (req.logedIn) {
+    if (req.loggedIn) {
         res.status(200).json({ projects: "p1" })
+    }
+    else {
+        res.status(200).json({ error: "Not_authorized" })
+    }
+})
+
+router.post('/add/projectAPI', authenticate, async (req, res) => {
+    if (req.loggedIn) {
+        try {
+            const { title, link, description } = req.body
+            // req.files
+            const project = new ProjectModel({
+                projectTitle: title,
+                imagePath: 'setting soon',
+                projectLink: link,
+                projectDescription: description
+            })
+
+            const data = await project.save()
+
+            res.status(200).json({ newProject: data })
+
+        } catch (error) {
+            console.log('catch admin Router=>', error.message)
+            res.status(500).json({ error: "Internal server error" })
+        }
     }
     else {
         res.status(200).json({ error: "Not_authorized" })

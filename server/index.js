@@ -4,6 +4,7 @@ import connectDB from './db/connectDB.js'
 import adminRoutes from './routes/adminRoutes.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import fileUpload from 'express-fileupload'
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 4000
 //middlewares
 app.use(express.json())
 app.use(cookieParser())
+app.use(fileUpload())
 app.use(cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST", "UPDATE", "DELETE"],

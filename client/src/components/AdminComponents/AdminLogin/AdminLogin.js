@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import css from "./AdminLogin.module.css"
 import Spinner from '../../UI/Spinner/Spinner'
 import withErrorHandler from '../HOC/withErrorHandler'
-import axios from 'axios'
+import axios from '../../../axios'
 
 export class AdminLogin extends Component {
     state = {
@@ -15,7 +15,7 @@ export class AdminLogin extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/admin/verify/authenticationAPI', { withCredentials: true })
+        axios.get('/admin/verify/authenticationAPI')
             .then((res) => {
                 if (!res.data.error)
                     this.props.history.push('/admin/projects')
@@ -37,7 +37,7 @@ export class AdminLogin extends Component {
             formData[key] = this.state.adminDetails[key]
         }
 
-        axios.post('http://localhost:4000/admin/loginAPI', formData, { withCredentials: true })
+        axios.post('/admin/loginAPI', formData)
             .then(res => {
                 // console.log(res)
                 if (res)

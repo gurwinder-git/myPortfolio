@@ -3,7 +3,7 @@ import css from './AdminProjects.module.css'
 import ProjectCard from './ProjectCard/ProjectCard'
 import Spinner from '../../UI/Spinner/Spinner'
 import withErrorHandler from '../HOC/withErrorHandler'
-import axios from 'axios'
+import axios from '../../../axios'
 import Model from '../MainModel/MainModel'
 import ProgressBar from '../../UI/progressBar/progressBar'
 
@@ -53,11 +53,12 @@ export class AdminProjects extends Component {
         image: {
             data: null,
             imageError: null
-        }
+        },
+        progress: null
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/admin/get/projectsAPI', { withCredentials: true })
+        axios.get('/admin/get/projectsAPI')
             .then((res) => {
                 if (res.data.error) {
                     this.props.history.push('/admin/login')
@@ -70,6 +71,10 @@ export class AdminProjects extends Component {
                 this.props.history.push('/admin/login')
                 console.log('[Admin projects] catch', error)
             })
+
+        window.addEventListener("resize", function (event) {
+            console.log(document.body.clientWidth + ' wide by ' + document.body.clientHeight + ' high');
+        })
     }
 
     addProjectHandler = () => {
@@ -115,9 +120,8 @@ export class AdminProjects extends Component {
             const { value } = formState[key]
             switch (key) {
                 case 'title':
-                    if (value.length < 5)
+                    if (value.trim(' ').length < 5)
                         formState[key].errorMessage = 'Title must contain atleast 5 characters.'
-
                     else
                         formState[key].errorMessage = null
 
@@ -128,16 +132,14 @@ export class AdminProjects extends Component {
                     const regex = new RegExp(expression)
                     if (!value.match(regex))
                         formState[key].errorMessage = 'Invalid URL'
-
                     else
                         formState[key].errorMessage = null
 
                     break;
 
                 case 'description':
-                    if (value.length < 10)
+                    if (value.trim(' ').length < 10)
                         formState[key].errorMessage = 'Description must contain atleast 10 characters.'
-
                     else
                         formState[key].errorMessage = null
 
@@ -147,6 +149,7 @@ export class AdminProjects extends Component {
                     break;
             }
         }
+        //setting new state if errors
         this.setState({ projectForm: formState })
 
         const imageState = { ...this.state.image }
@@ -159,16 +162,48 @@ export class AdminProjects extends Component {
             this.setState({ image: imageState })
         }
 
-
+        //check if form has errors and return
         for (let key in formState) {
             if (formState[key].errorMessage)
                 return
         }
 
-        //now every thing is validated
+        //now every thing is validated 
+        //add data to form
+        const formData = new FormData()
+        for (let key in formState) {
+            formData.append(key, formState[key].value)
+        }
+        formData.append('image', imageState.data)
 
+        //send request to server
+        axios.post('/admin/add/projectAPI', formData, {
+            onUploadProgress: progressEvent => {
+                const value = Math.round((progressEvent.loaded * 100) / progressEvent.total) > 99
+                    ? "Please wait ..."
+                    : Math.round((progressEvent.loaded * 100) / progressEvent.total)
 
+                this.setState({
+                    progress: value
+                })
+            }
+        }).then((res) => {
+            //if response undefined
+            if (res === undefined) {
+                this.setState({ displayForm: false })
+                return
+            }
 
+            //if not logged in
+            if (res.data.error)
+                this.props.history.push('/admin/login')
+            else {
+                this.setState({ displayForm: false })
+                console.log('padding work', res)
+            }
+        }).catch(error => {
+            console.log("adminproject catch", error)
+        })
     }
 
     render() {
@@ -177,17 +212,17 @@ export class AdminProjects extends Component {
             height: '100vh'
         }
 
-        const projectFormArray = []
+        const arrayOfObject = []
 
         for (let key in this.state.projectForm) {
-            projectFormArray.push({
+            arrayOfObject.push({
                 id: key,
                 config: this.state.projectForm[key]
             })
         }
-        // console.log(projectFormArray)
+        // console.log(arrayOfObject)
 
-        const formItems = projectFormArray.map((item) => {
+        const formItems = arrayOfObject.map((item) => {
             return (
                 <div key={item.id}>
                     <label>{item.config.label}</label>
@@ -228,7 +263,8 @@ export class AdminProjects extends Component {
                                     style={{ borderColor: this.state.image.imageError ? '#ff000078' : 'grey', backgroundColor: this.state.image.imageError ? '#ff00000f' : null }} />
                                 <small>{this.state.image.imageError}</small>
                             </div>
-                            <ProgressBar width={'30%'} />
+
+                            {this.state.progress ? typeof this.state.progress === 'string' ? this.state.progress : <ProgressBar width={`${this.state.progress}%`} /> : null}
 
                             <div style={{ display: 'flex', flexDirection: "row" }}>
                                 <button className={css.submitBtn} onClick={this.formSubmitHandler}>Submit</button>

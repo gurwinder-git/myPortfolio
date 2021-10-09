@@ -6,7 +6,7 @@ async function adminAuthMiddleware(req, res, next) {
 
     //if not received token
     if (!token) {
-        req.logedIn = false
+        req.loggedIn = false
         return next()
     }
     try {
@@ -15,18 +15,18 @@ async function adminAuthMiddleware(req, res, next) {
 
         //if token is not valid so admin is null
         if (!admin) {
-            req.logedIn = false
+            req.loggedIn = false
             return next()
         }
 
         //here admin is valid
-        req.logedIn = true
+        req.loggedIn = true
         next()
 
     } catch (error) {
         res.status(500).json({ error: "Internal server error" })
         console.log(error.message)
-        // req.logedIn = false
+        // req.loggedIn = false
         // next()
     }
 
