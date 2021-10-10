@@ -4,7 +4,7 @@ import ProjectModel from "../models/projectModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import authenticate from '../middleware/authenticate.js'
-import mongooseErrorHandler from 'mongoose'
+import paginatedResult from "../middleware/paginatedMiddleware.js";
 
 const router = express.Router();
 
@@ -47,9 +47,9 @@ router.get('/verify/authenticationAPI', authenticate, (req, res) => {
 })
 
 
-router.get('/get/projectsAPI', authenticate, (req, res) => {
+router.get('/get/projectsAPI', authenticate, paginatedResult, (req, res) => {
     if (req.loggedIn) {
-        res.status(200).json({ projects: "p1" })
+        res.status(200).json(res.results)
     }
     else {
         res.status(200).json({ error: "Not_authorized" })

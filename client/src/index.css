@@ -12,8 +12,12 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background: whitesmoke;
+  background-color: rgb(148, 25, 25);
   /* overflow: hidden; */
+}
+
+body {
+  overflow-y: auto;
 }
 
 ::-webkit-scrollbar {

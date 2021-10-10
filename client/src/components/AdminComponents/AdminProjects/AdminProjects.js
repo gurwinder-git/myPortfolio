@@ -6,11 +6,14 @@ import withErrorHandler from '../HOC/withErrorHandler'
 import axios from '../../../axios'
 import Model from '../MainModel/MainModel'
 import ProgressBar from '../../UI/progressBar/progressBar'
+import { connect } from 'react-redux'
+
+//action creators
+import { fetchProjects } from '../../../store/actions/adminProjectsActionCreator'
 
 export class AdminProjects extends Component {
 
     state = {
-        loading: true,
         displayForm: false,
         projectForm: {
             title: {
@@ -57,24 +60,23 @@ export class AdminProjects extends Component {
         progress: null
     }
 
-    componentDidMount() {
-        axios.get('/admin/get/projectsAPI')
-            .then((res) => {
-                if (res.data.error) {
-                    this.props.history.push('/admin/login')
-                } else {
-                    // console.log(res.data)
-                    this.setState({ loading: false })
-                }
-            })
-            .catch((error) => {
-                this.props.history.push('/admin/login')
-                console.log('[Admin projects] catch', error)
-            })
+    // fetchProjects = () => {
+    //     axios.get('/admin/get/projectsAPI')
+    //         .then((res) => {
+    //             if (res.data.error) {
+    //                 this.props.history.push('/admin/login')
+    //             } else {
+    //                 // console.log(res.data)
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             this.props.history.push('/admin/login')
+    //             console.log('[Admin projects] catch', error)
+    //         })
+    // }
 
-        window.addEventListener("resize", function (event) {
-            console.log(document.body.clientWidth + ' wide by ' + document.body.clientHeight + ' high');
-        })
+    componentDidMount() {
+        this.props.fetchProjects(this.props.history.push)
     }
 
     addProjectHandler = () => {
@@ -194,7 +196,7 @@ export class AdminProjects extends Component {
                 return
             }
 
-            //if not logged in
+            //if not authorized
             if (res.data.error)
                 this.props.history.push('/admin/login')
             else {
@@ -207,9 +209,9 @@ export class AdminProjects extends Component {
     }
 
     render() {
-        const onFormStyle = {
+        const onFormEnabled = {
             overflow: this.state.displayForm ? 'hidden' : null,
-            height: '100vh'
+            height: this.state.displayForm ? '100vh' : null
         }
 
         const arrayOfObject = []
@@ -236,9 +238,9 @@ export class AdminProjects extends Component {
         })
 
         return (
-            this.state.loading ?
+            this.props.projects.length === 0 ?
                 <Spinner /> :
-                <div className={css.adminProjects} style={onFormStyle}>
+                <div className={css.adminProjects} style={onFormEnabled}>
 
                     <nav>
                         <button className={[css.addProjects, css.btn].join(' ')} onClick={this.addProjectHandler}>
@@ -277,10 +279,24 @@ export class AdminProjects extends Component {
                     <main className={css.projectCardContainer}>
                         <ProjectCard />
                         <ProjectCard />
+                        <ProjectCard />
+                        <ProjectCard />
+                        <ProjectCard />
                     </main>
                 </div>
         )
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        projects: state.adminProjects.projects
+    }
+}
 
-export default withErrorHandler(AdminProjects, axios)
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchProjects: (redirectFunc) => dispatch(fetchProjects(redirectFunc))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(AdminProjects, axios))

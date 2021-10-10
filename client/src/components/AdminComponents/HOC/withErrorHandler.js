@@ -8,12 +8,12 @@ function withErrorHandler(WarappedComponent, axios) {
         }
 
         componentWillMount() {
-            axios.interceptors.request.use((req) => {
+            this.requestInterceptor = axios.interceptors.request.use((req) => {
                 this.setState({ error: null })
                 return req
             })
 
-            axios.interceptors.response.use((res) => {
+            this.responseIntercepter = axios.interceptors.response.use((res) => {
                 // if (res === undefined)
                 //     this.setState({ error: 'Something went wrong' })
                 return res
@@ -24,6 +24,12 @@ function withErrorHandler(WarappedComponent, axios) {
                     this.setState({ error: error.message })
             })
         }
+
+        componentWillUnmount() {
+            axios.interceptors.request.eject(this.requestInterceptor)
+            axios.interceptors.response.eject(this.responseIntercepter)
+        }
+
 
         errorConformHandler = () => {
             this.setState({ error: null })
